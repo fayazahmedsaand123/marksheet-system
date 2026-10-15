@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Marksheet</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a href="/" class="navbar-brand">
+                <i class="bi bi-mortarboard-fill me-2"></i>
+                Marksheet System
+            </a>
+            <div class="d-flex gap-2">
+                <a href="/" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-house-door me-1"></i>
+                    Dashboard
+                </a>
+                <a href="/create" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-circle me-1"></i>
+                    New Marksheet
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="card shadow">
+            <div class="card-header bg-warning">
+                <h4 class="mb-0">
+                    <i class="bi bi-pencil-square me-2"></i>
+                    Edit Marksheet
+                </h4>
+            </div>
+            <div class="card-body">
+
+                <!-- Success Message (hidden by default) -->
+                <div id="success-message" class="alert alert-success d-none">
+                    <i class="bi bi-check-circle me-2"></i>
+                    Marksheet updated successfully!
+                </div>
+
+                <form id="edit-form">
+
+                    <h6 class="text-muted mb-3">Student Information</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Student Name</label>
+                            <input type="text" name="student_name"
+                                   class="form-control"
+                                   value="{{ marksheet.student_name }}"
+                                   required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Roll Number</label>
+                            <input type="text" name="roll_number"
+                                   class="form-control"
+                                   value="{{ marksheet.roll_number }}"
+                                   required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Class</label>
+                            <select name="class" class="form-select" required>
+                                <option value="9"  {% if marksheet.class == '9' %}selected{% endif %}>Class 9</option>
+                                <option value="10" {% if marksheet.class == '10' %}selected{% endif %}>Class 10</option>
+                                <option value="11" {% if marksheet.class == '11' %}selected{% endif %}>Class 11</option>
+                                <option value="12" {% if marksheet.class == '12' %}selected{% endif %}>Class 12</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Examination</label>
+                            <select name="exam_name" class="form-select" required>
+                                <option value="Midterm" {% if marksheet.exam_name == 'Midterm' %}selected{% endif %}>Midterm</option>
+                                <option value="Final"   {% if marksheet.exam_name == 'Final' %}selected{% endif %}>Final</option>
+                                <option value="Annual"  {% if marksheet.exam_name == 'Annual' %}selected{% endif %}>Annual</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <h6 class="text-muted mb-3">Subject Marks (Max: 100 each)</h6>
+                    <div class="row mb-4">
+                        <div class="col-md-2">
+                            <label class="form-label">English</label>
+                            <input type="number" name="english"
+                                   class="form-control"
+                                   value="{{ marksheet.english }}"
+                                   min="0" max="100" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Mathematics</label>
+                            <input type="number" name="mathematics"
+                                   class="form-control"
+                                   value="{{ marksheet.mathematics }}"
+                                   min="0" max="100" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Computer</label>
+                            <input type="number" name="computer"
+                                   class="form-control"
+                                   value="{{ marksheet.computer }}"
+                                   min="0" max="100" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Physics</label>
+                            <input type="number" name="physics"
+                                   class="form-control"
+                                   value="{{ marksheet.physics }}"
+                                   min="0" max="100" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Chemistry</label>
+                            <input type="number" name="chemistry"
+                                   class="form-control"
+                                   value="{{ marksheet.chemistry }}"
+                                   min="0" max="100" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-warning">
+                        <i class="bi bi-save me-2"></i>Update Marksheet
+                    </button>
+                    <a href="/" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left me-2"></i>Cancel
+                    </a>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById("edit-form").addEventListener("submit", function(e) {
+
+            // Stop normal form submit
+            e.preventDefault();
+
+            // Collect form data
+            const formData = new FormData(this);
+
+            // Send AJAX request
+            fetch("/edit/{{ marksheet.id }}", {
+                method: "POST",
+                body: formData
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                if (data.success) {
+                    // Show success message
+                    document.getElementById("success-message").classList.remove("d-none");
+
+                    // Hide message after 3 seconds
+                    setTimeout(function() {
+                        window.location.href = "/";
+                    }, 2000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

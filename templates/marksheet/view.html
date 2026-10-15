@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marksheet - {{ marksheet.student_name }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+    @media print {
+        /* Hide navbar and buttons when printing */
+        nav, .card-footer {
+            display: none !important;
+        }
+
+        /* Remove background colors */
+        body {
+            background: white !important;
+        }
+
+        /* Make card full width */
+        .container {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        /* Remove shadow */
+        .card {
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Make everything smaller to fit 1 page */
+        .card-body {
+            padding: 10px !important;
+        }
+
+        table {
+            font-size: 12px !important;
+        }
+
+        h3 {
+            font-size: 16px !important;
+        }
+
+        h4 {
+            font-size: 14px !important;
+        }
+    }
+</style>
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a href="/" class="navbar-brand">
+                <i class="bi bi-mortarboard-fill me-2"></i>
+                Marksheet System
+            </a>
+            <div class="d-flex gap-2">
+                <span class="navbar-text text-white me-2">
+                    <i class="bi bi-person-circle me-1"></i>
+                    {{ session["user_name"] }}
+                </span>
+                <a href="/" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-house-door me-1"></i>
+                    Dashboard
+                </a>
+                <a href="/create" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-circle me-1"></i>
+                    New Marksheet
+                </a>
+                <a href="/logout" class="btn btn-danger btn-sm">
+                    <i class="bi bi-box-arrow-right me-1"></i>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="card shadow">
+
+            <!-- Header -->
+            <div class="card-header bg-dark text-white text-center py-4">
+                <i class="bi bi-mortarboard-fill fs-1"></i>
+                <h3 class="mt-2 mb-0">Marksheet Management System</h3>
+                <p class="mb-0 text-secondary">Official Academic Result</p>
+            </div>
+
+            <div class="card-body p-4">
+
+                <!-- Student Info -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th class="bg-light">Student Name</th>
+                                <td>{{ marksheet.student_name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Roll Number</th>
+                                <td>{{ marksheet.roll_number }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th class="bg-light">Class</th>
+                                <td>{{ marksheet.class }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Examination</th>
+                                <td>{{ marksheet.exam_name }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Subject Marks -->
+                <h5 class="mb-3">
+                    <i class="bi bi-journal-text me-2"></i>
+                    Subject Marks
+                </h5>
+                <div class="table-responsive mb-4">
+                    <table class="table table-bordered text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Subject</th>
+                                <th>Marks Obtained</th>
+                                <th>Maximum Marks</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>English</td>
+                                <td>{{ marksheet.english }}</td>
+                                <td>100</td>
+                                <td>
+                                    {% if marksheet.english >= 40 %}
+                                        <span class="badge bg-success">Pass</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Fail</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Mathematics</td>
+                                <td>{{ marksheet.mathematics }}</td>
+                                <td>100</td>
+                                <td>
+                                    {% if marksheet.mathematics >= 40 %}
+                                        <span class="badge bg-success">Pass</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Fail</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Computer Science</td>
+                                <td>{{ marksheet.computer }}</td>
+                                <td>100</td>
+                                <td>
+                                    {% if marksheet.computer >= 40 %}
+                                        <span class="badge bg-success">Pass</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Fail</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Physics</td>
+                                <td>{{ marksheet.physics }}</td>
+                                <td>100</td>
+                                <td>
+                                    {% if marksheet.physics >= 40 %}
+                                        <span class="badge bg-success">Pass</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Fail</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Chemistry</td>
+                                <td>{{ marksheet.chemistry }}</td>
+                                <td>100</td>
+                                <td>
+                                    {% if marksheet.chemistry >= 40 %}
+                                        <span class="badge bg-success">Pass</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Fail</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Result Summary -->
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <div class="card bg-light p-3">
+                            <h6 class="text-muted">Total Marks</h6>
+                            <h4>{{ marksheet.total }} / 500</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-light p-3">
+                            <h6 class="text-muted">Percentage</h6>
+                            <h4>{{ marksheet.percentage }}%</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-light p-3">
+                            <h6 class="text-muted">Grade</h6>
+                            <h4>{{ marksheet.grade }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-light p-3">
+                            <h6 class="text-muted">Result</h6>
+                            {% if marksheet.result == "Pass" %}
+                                <h4 class="text-success">Pass ✅</h4>
+                            {% else %}
+                                <h4 class="text-danger">Fail ❌</h4>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer Buttons -->
+            <div class="card-footer d-flex gap-2">
+                <a href="/" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>
+                    Back
+                </a>
+                <button onclick="window.print()" class="btn btn-primary">
+                    <i class="bi bi-printer me-1"></i>
+                    Print
+                </button>
+            </div>
+
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
